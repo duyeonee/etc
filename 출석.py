@@ -50,6 +50,7 @@ class student():
             cur = conn.cursor()
             cur.execute('SELECT * FROM HARDWARETABLE')
             [logs.append(row) for row in cur.fetchall() if row[2] == 'WIFI1' or row[2] == 'WIFI2']
+            conn.close()
         self.log = logs
 
     # function that gets the student total wifi scanning log
@@ -60,6 +61,7 @@ class student():
             cur = conn.cursor()
             cur.execute('SELECT * FROM GPSTABLE')
             [logs.append(row) for row in cur.fetchall()]
+            conn.close()
         self.gpslog = logs
 
     # function that gets classes information that student enrolled
@@ -263,7 +265,7 @@ class student():
                                 windowIn += 1
                                 if windowIn > 5:
                                     self.attendance.ix[day, cls] = "gps출석"
-                                    print("gps가 해냈다")
+                                    print(day+cls+"gps가 해냈다")
                                     break
                                 else:
                                     self.attendance.ix[day, cls] = "검출없음"
@@ -304,7 +306,7 @@ if __name__ == '__main__':
     cur = conn.cursor()
     cur.execute('SELECT * FROM SCHEDULETABLE')
     classschedule = [list(row) for row in cur.fetchall()]
-
+    conn.close()
     # integrate AP data and class schedule data by pandas format
     # integrate gps data and class schedule data by pandas format
     for i in classschedule:
@@ -321,7 +323,7 @@ if __name__ == '__main__':
     rows = cur.fetchall()
     for row in rows:
         studentsmeta.append(row)
-
+    conn.close()
     # 출석 체크 실행
     # sample students list
     datapath = '/Users/gimduyeon/Dropbox (KAIST Dr.M)/KAIST Dr.M의 팀 폴더/공유/rawdata/'
